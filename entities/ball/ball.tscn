@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://bk5ivlgwgy1yj"]
+
+[ext_resource type="Script" uid="uid://di0datf0dy01u" path="res://entities/ball/ball.gd" id="1_61umk"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_61umk"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_cs1va"]
+radius = 10.0
+height = 20.0
+radial_segments = 16
+rings = 16
+
+[sub_resource type="Gradient" id="Gradient_cs1va"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.55050474, 0.46954978, 0.14738691, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_61umk"]
+gradient = SubResource("Gradient_cs1va")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cs1va"]
+
+[node name="Ball" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 7
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_61umk")
+continuous_cd = 2
+max_contacts_reported = 2
+linear_damp = 0.5
+script = ExtResource("1_61umk")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+mesh = SubResource("SphereMesh_cs1va")
+texture = SubResource("GradientTexture1D_61umk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cs1va")

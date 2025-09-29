@@ -1,10 +1,9 @@
-extends CharacterBody2D
+extends RigidBody2D
 class_name Player
 
-const MAX_SPEED: float = 400
-const SKID_SPEED: float = 800
-const ACCELERATION: float = 500
-const START_SPEED: float = 1200
+const MAX_SPEED: float = 200
+const SKID_SPEED: float = 600
+const ACCELERATION: float = 40000
 
 var direction: Vector2
 
@@ -18,23 +17,18 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
-	move_and_slide()
-	Glob.debug_panel.add_property('Velocity', str(velocity), 2)
+	_limit_move_speed()
+	Glob.debug_panel.add_property('Velocity', str(linear_velocity), 2)
 
 
 func _handle_movement(delta: float) -> void:
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	if not direction.is_zero_approx():
-		# Init first move
-		if velocity.length() < START_SPEED * delta:
-			velocity = direction * START_SPEED * delta
-		# Handle move acceleration
-		else:
-			for axis: StringName in ["x", "y"]:
-				velocity[axis] += direction[axis] * ACCELERATION * delta
+		apply_central_force(direction * ACCELERATION)
 	else:
-		for axis: StringName in ["x", "y"]:
-			velocity[axis] = move_toward(velocity[axis], 0, SKID_SPEED * delta)
+		linear_velocity = linear_velocity.move_toward(Vector2.ZERO, SKID_SPEED * delta)
 
-	# Prevent too fast movement
-	velocity = velocity.limit_length(MAX_SPEED)
+
+func _limit_move_speed() -> void:
+	if linear_velocity.length_squared() > MAX_SPEED*MAX_SPEED:
+		linear_velocity = linear_velocity.normalized() * MAX_SPEED

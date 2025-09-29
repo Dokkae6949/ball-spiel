@@ -1,7 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dloq01g4o4rqr"]
+[gd_scene load_steps=8 format=3 uid="uid://dloq01g4o4rqr"]
 
 [ext_resource type="Script" uid="uid://raj5u3ofanni" path="res://entities/player/player.gd" id="1_symyc"]
 [ext_resource type="PackedScene" uid="uid://dcl6ybv8vnco2" path="res://entities/player/user_interface.tscn" id="2_abrql"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_abrql"]
+bounce = 1.0
+absorbent = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_sfv1e"]
 radius = 16.0
@@ -19,11 +23,12 @@ gradient = SubResource("Gradient_symyc")
 [sub_resource type="CircleShape2D" id="CircleShape2D_symyc"]
 radius = 16.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 7
-wall_min_slide_angle = 0.0
-floor_stop_on_slope = false
+mass = 80.0
+physics_material_override = SubResource("PhysicsMaterial_abrql")
+continuous_cd = 2
 script = ExtResource("1_symyc")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
@@ -34,12 +39,12 @@ texture = SubResource("GradientTexture1D_abrql")
 shape = SubResource("CircleShape2D_symyc")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(1.5, 1.5)
 process_callback = 0
-limit_left = -560
-limit_top = -320
-limit_right = 560
-limit_bottom = 320
+limit_left = -420
+limit_top = -240
+limit_right = 420
+limit_bottom = 240
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 16.0
