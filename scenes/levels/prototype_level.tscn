@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://cflj1w58yi31p"]
+
+[ext_resource type="PackedScene" uid="uid://dloq01g4o4rqr" path="res://entities/player/player.tscn" id="1_bwbut"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gigty"]
+size = Vector3(640, 320, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gigty"]
+size = Vector2(640, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bwbut"]
+size = Vector2(16, 352)
+
+[node name="PrototypeLevel" type="Node2D"]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+mesh = SubResource("BoxMesh_gigty")
+
+[node name="PlayerWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(0, -168)
+shape = SubResource("RectangleShape2D_gigty")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(0, 168)
+shape = SubResource("RectangleShape2D_gigty")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(-328, 0)
+shape = SubResource("RectangleShape2D_bwbut")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(328, 0)
+shape = SubResource("RectangleShape2D_bwbut")
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="Player" parent="Players" instance=ExtResource("1_bwbut")]

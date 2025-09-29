@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dloq01g4o4rqr"]
+
+[ext_resource type="Script" uid="uid://raj5u3ofanni" path="res://entities/player/player.gd" id="1_symyc"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_sfv1e"]
+radius = 16.0
+height = 32.0
+radial_segments = 16
+rings = 16
+
+[sub_resource type="Gradient" id="Gradient_symyc"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0.83137256, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_abrql"]
+gradient = SubResource("Gradient_symyc")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_symyc"]
+radius = 16.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 7
+motion_mode = 1
+wall_min_slide_angle = 0.17453292
+script = ExtResource("1_symyc")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+mesh = SubResource("SphereMesh_sfv1e")
+texture = SubResource("GradientTexture1D_abrql")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_symyc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.2, 1.2)
+limit_left = -640
+limit_top = -400
+limit_right = 640
+limit_bottom = 400
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 16.0
