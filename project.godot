@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ball Spiel"
-run/main_scene="uid://cflj1w58yi31p"
+run/main_scene="uid://bb7bwwqtvb542"
 config/features=PackedStringArray("4.5")
 config/icon="res://icon.svg"
 

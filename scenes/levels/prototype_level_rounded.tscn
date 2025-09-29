@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://bb7bwwqtvb542"]
+
+[ext_resource type="Script" uid="uid://7ftjwubavgoe" path="res://services/corner_tool.gd" id="1_0hqs5"]
+[ext_resource type="PackedScene" uid="uid://dloq01g4o4rqr" path="res://entities/player/player.tscn" id="1_8qtyr"]
+[ext_resource type="PackedScene" uid="uid://bk5ivlgwgy1yj" path="res://entities/ball/ball.tscn" id="2_0hqs5"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_o7urk"]
+size = Vector2(640, 320)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ofouv"]
+bounce = 0.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sl0li"]
+size = Vector2(640, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bnk4n"]
+size = Vector2(16, 352)
+
+[node name="prototype_level_rounded" type="Node2D"]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+mesh = SubResource("QuadMesh_o7urk")
+
+[node name="PlayerWall" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_ofouv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(0, -168)
+shape = SubResource("RectangleShape2D_sl0li")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(0, 168)
+shape = SubResource("RectangleShape2D_sl0li")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(-328, 0)
+shape = SubResource("RectangleShape2D_bnk4n")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="PlayerWall"]
+position = Vector2(328, 0)
+shape = SubResource("RectangleShape2D_bnk4n")
+
+[node name="CollisionShape2D5" type="CollisionPolygon2D" parent="PlayerWall"]
+position = Vector2(-320, -160)
+polygon = PackedVector2Array(0, 64, 0.0770908, 60.85967, 0.3081775, 57.726902, 0.69270337, 54.60925, 1.229742, 51.51422, 1.9179997, 48.44927, 2.7558186, 45.42178, 3.74118, 42.43905, 4.87171, 39.50826, 6.1446853, 36.636475, 7.5570393, 33.83061, 9.105369, 31.097424, 10.785945, 28.443504, 12.594718, 25.875244, 14.527331, 23.39883, 16.579128, 21.020227, 18.745167, 18.745167, 21.020227, 16.579128, 23.39883, 14.527331, 25.875244, 12.594718, 28.443504, 10.785945, 31.097424, 9.105369, 33.83061, 7.5570393, 36.636475, 6.1446853, 39.50826, 4.87171, 42.43905, 3.74118, 45.42178, 2.7558186, 48.44927, 1.9179997, 51.51422, 1.229742, 54.60925, 0.69270337, 57.726902, 0.3081775, 60.85967, 0.0770908, 64, 0, 0, 0)
+script = ExtResource("1_0hqs5")
+radius = 64
+steps = 32
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="Player" parent="Players" instance=ExtResource("1_8qtyr")]
+
+[node name="Ball" parent="." instance=ExtResource("2_0hqs5")]
+position = Vector2(-48, -26)
