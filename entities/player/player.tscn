@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dcl6ybv8vnco2" path="res://entities/player/user_interface.tscn" id="2_abrql"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_abrql"]
+friction = 0.0
 bounce = 1.0
 absorbent = true
 

@@ -1,9 +1,9 @@
 extends RigidBody2D
 class_name Player
 
-const MAX_SPEED: float = 200
-const SKID_SPEED: float = 600
-const ACCELERATION: float = 40000
+const MAX_SPEED: float = 120
+const SKID_SPEED: float = 160
+const ACCELERATION: float = 34000
 
 var direction: Vector2
 
