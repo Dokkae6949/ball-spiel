@@ -18,9 +18,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
-	_handle_collisions()
-	Glob.debug_panel.add_property('Velocity', str(velocity), 2)
 	move_and_slide()
+	Glob.debug_panel.add_property('Velocity', str(velocity), 2)
 
 
 func _handle_movement(delta: float) -> void:
@@ -39,16 +38,3 @@ func _handle_movement(delta: float) -> void:
 
 	# Prevent too fast movement
 	velocity = velocity.limit_length(MAX_SPEED)
-
-
-func _handle_collisions() -> void:
-	# Reset velocity when hitting wall straight on.
-	if direction.is_zero_approx(): return
-	for i: int in get_slide_collision_count():
-		var col: KinematicCollision2D = get_slide_collision(i)
-		var col_normal: Vector2 = col.get_normal()
-		var angle_to_col: float = rad_to_deg(col_normal.angle_to(direction))
-		if (angle_to_col > 179 and angle_to_col < 181) or (angle_to_col < -179 and angle_to_col > -181):
-			for axis: StringName in ["x", "y"]:
-				if col_normal[axis] > 0.0001 or col_normal[axis] < 0.0001:
-					velocity[axis] = 0.0

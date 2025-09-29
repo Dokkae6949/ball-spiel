@@ -22,10 +22,8 @@ radius = 16.0
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 7
-motion_mode = 1
 wall_min_slide_angle = 0.0
 floor_stop_on_slope = false
-floor_block_on_wall = false
 script = ExtResource("1_symyc")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
