@@ -37,17 +37,13 @@ shape = SubResource("CircleShape2D_symyc")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.2, 1.2)
-limit_left = -640
-limit_top = -400
-limit_right = 640
-limit_bottom = 400
+process_callback = 0
+limit_left = -560
+limit_top = -320
+limit_right = 560
+limit_bottom = 320
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 16.0
 
-[node name="UserInterface" parent="Camera2D" instance=ExtResource("2_abrql")]
-custom_minimum_size = Vector2(960, 540)
-offset_left = -480.0
-offset_top = -270.0
-offset_right = 480.0
-offset_bottom = 270.0
+[node name="UserInterface" parent="." instance=ExtResource("2_abrql")]

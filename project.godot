@@ -20,6 +20,13 @@ config/icon="res://icon.svg"
 Glob="*res://services/autoloads/glob.gd"
 NetworkService="*res://services/autoloads/network_service.gd"
 
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
 [input]
 
 move_left={
@@ -64,3 +71,11 @@ ui_debug_toggle={
 2d_physics/layer_1="Environment"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Interactable"
+
+[physics]
+
+common/physics_interpolation=true
+
+[rendering]
+
+anti_aliasing/quality/msaa_2d=2

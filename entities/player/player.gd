@@ -49,7 +49,6 @@ func _handle_collisions() -> void:
 		var col_normal: Vector2 = col.get_normal()
 		var angle_to_col: float = rad_to_deg(col_normal.angle_to(direction))
 		if (angle_to_col > 179 and angle_to_col < 181) or (angle_to_col < -179 and angle_to_col > -181):
-			print(col.get_normal())
 			for axis: StringName in ["x", "y"]:
 				if col_normal[axis] > 0.0001 or col_normal[axis] < 0.0001:
 					velocity[axis] = 0.0
