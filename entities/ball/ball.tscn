@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bk5ivlgwgy1yj"]
+[gd_scene load_steps=10 format=3 uid="uid://bk5ivlgwgy1yj"]
 
 [ext_resource type="Script" uid="uid://di0datf0dy01u" path="res://entities/ball/ball.gd" id="1_61umk"]
+[ext_resource type="Script" uid="uid://bollgchudn4ao" path="res://entities/ball/goal_detection.gd" id="2_jyt08"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_61umk"]
 friction = 0.0
@@ -25,6 +26,9 @@ height = 6.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_cs1va"]
 radius = 12.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_61umk"]
+radius = 2.0
+
 [node name="Ball" type="RigidBody2D"]
 collision_layer = 4
 collision_mask = 15
@@ -45,3 +49,13 @@ mesh = SubResource("SphereMesh_61umk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_cs1va")
+
+[node name="GoalDetection" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("2_jyt08")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalDetection"]
+shape = SubResource("CircleShape2D_61umk")
+debug_color = Color(0.8459344, 0.0010015047, 0.9108718, 0.41960785)

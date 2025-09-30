@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3 uid="uid://bcrgwpxukuhea"]
+
+[ext_resource type="Script" uid="uid://bqt2053pwp7uv" path="res://entities/goal/goal.gd" id="1_6xcja"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ab6j"]
+size = Vector2(64, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6xcja"]
+size = Vector2(8, 128)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dmkwb"]
+size = Vector2(64, 120)
+orientation = 2
+
+[sub_resource type="Gradient" id="Gradient_mhrrt"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.9254902, 0.08235294, 0.20784314, 0.39215687)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ybxdf"]
+gradient = SubResource("Gradient_mhrrt")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4ab6j"]
+size = Vector2(64, 8)
+orientation = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6xcja"]
+size = Vector2(8, 128)
+orientation = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dmkwb"]
+size = Vector2(60, 120)
+
+[node name="Goal" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("1_6xcja")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -64)
+shape = SubResource("RectangleShape2D_4ab6j")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 64)
+shape = SubResource("RectangleShape2D_4ab6j")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(-32, 0)
+shape = SubResource("RectangleShape2D_6xcja")
+
+[node name="Floor" type="MeshInstance2D" parent="."]
+mesh = SubResource("PlaneMesh_dmkwb")
+texture = SubResource("GradientTexture1D_ybxdf")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(0, -64)
+mesh = SubResource("PlaneMesh_4ab6j")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="."]
+position = Vector2(0, 64)
+mesh = SubResource("PlaneMesh_4ab6j")
+
+[node name="MeshInstance2D3" type="MeshInstance2D" parent="."]
+position = Vector2(-32, 0)
+mesh = SubResource("PlaneMesh_6xcja")
+
+[node name="GoalArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalArea"]
+position = Vector2(2, 0)
+shape = SubResource("RectangleShape2D_dmkwb")
+debug_color = Color(0.38457504, 0.61268944, 3.85046e-07, 0.41960785)
+
+[connection signal="area_entered" from="GoalArea" to="." method="_on_goal_area_area_entered"]
