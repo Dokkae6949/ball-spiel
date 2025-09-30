@@ -10,6 +10,9 @@ extends Control
 func _ready() -> void:
 	join_server_button.pressed.connect(_join_pressed)
 	host_server_button.pressed.connect(_host_pressed)
+	
+	NetworkService.hosted.connect(_on_hosted)
+	NetworkService.joined.connect(_on_joined)
 
 
 func _join_pressed() -> void:
@@ -33,3 +36,10 @@ func _host_pressed() -> void:
 	print("[Menu] Trying to host")
 	
 	NetworkService.host(9912)
+
+
+func _on_hosted(port: int) -> void:
+	print("[Menu] Hosting server (Port %s). Trying to open lobby." % port)
+
+func _on_joined(ip: String, port: int) -> void:
+	print("[Menu] Joined server (%s:%s). Trying to open lobby." % [ip, port])
