@@ -5,7 +5,7 @@ enum State { DISCONNECTED, HOST, CLIENT }
 
 
 signal hosted(port: int)
-signal joined(ip: String, port: int)
+signal joined(port: int, ip: String)
 signal peer_connected(id: int)
 signal peer_disconnected(id: int)
 
@@ -42,7 +42,7 @@ func join(ip: String, port: int) -> void:
 		return
 	
 	multiplayer.multiplayer_peer = peer
-	joined.emit(ip, port)
+	joined.emit(port, ip)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
