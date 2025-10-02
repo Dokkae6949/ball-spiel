@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dloq01g4o4rqr"]
+[gd_scene load_steps=10 format=3 uid="uid://dloq01g4o4rqr"]
 
 [ext_resource type="Script" uid="uid://raj5u3ofanni" path="res://entities/player/player.gd" id="1_symyc"]
 [ext_resource type="PackedScene" uid="uid://dcl6ybv8vnco2" path="res://entities/player/user_interface.tscn" id="2_abrql"]
+[ext_resource type="Script" uid="uid://cce4eysbrlch2" path="res://entities/player/interact_area.gd" id="3_sglur"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_abrql"]
 friction = 0.0
@@ -23,6 +24,9 @@ gradient = SubResource("Gradient_symyc")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_symyc"]
 radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_abrql"]
+radius = 20.0
 
 [node name="Player" type="RigidBody2D"]
 collision_layer = 2
@@ -51,3 +55,13 @@ position_smoothing_enabled = true
 position_smoothing_speed = 16.0
 
 [node name="UserInterface" parent="." instance=ExtResource("2_abrql")]
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("3_sglur")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource("CircleShape2D_abrql")
+debug_color = Color(0.52805233, 0.57219076, 3.85046e-07, 0.41960785)

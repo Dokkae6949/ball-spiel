@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Ball Spiel"
 run/main_scene="uid://cflj1w58yi31p"
-config/features=PackedStringArray("4.5")
+config/features=PackedStringArray("4.6")
 config/icon="res://icon.svg"
 
 [autoload]
