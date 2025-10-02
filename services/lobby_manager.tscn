@@ -15,4 +15,4 @@ spawn_path = NodePath("..")
 [node name="CurrentScene" type="Node" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-physics_interpolation_mode = 1
+physics_interpolation_mode = 2
