@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOs/nixpkgs/nixos-unstable";
     
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    godot.url = "github:florianvazelle/godot-overlay";
   };
 
   outputs = inputs@{ flake-parts, ... }:
@@ -29,7 +31,7 @@
           name = "godot";
 
           nativeBuildInputs = with pkgs; [
-            godot
+            inputs.godot.packages."${system}".latest
           ];
         };
       };
