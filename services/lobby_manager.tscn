@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://c34m7sr8frk73"]
+
+[ext_resource type="Script" uid="uid://cupcmcghrjvjk" path="res://services/lobby_manager.gd" id="1_jgvmm"]
+
+[node name="LobbyManager" type="Node"]
+script = ExtResource("1_jgvmm")
+
+[node name="Players" type="Node2D" parent="."]
+z_index = 99
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Players"]
+_spawnable_scenes = PackedStringArray("uid://dloq01g4o4rqr")
+spawn_path = NodePath("..")
+
+[node name="CurrentScene" type="Node" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+physics_interpolation_mode = 1

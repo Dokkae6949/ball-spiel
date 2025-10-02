@@ -11,9 +11,13 @@ var direction: Vector2
 
 
 func _ready() -> void:
-	if is_multiplayer_authority():
+	set_multiplayer_authority(int(name))
+
+	if name == str(multiplayer.get_unique_id()):
 		Glob.player = self
 		camera.make_current()
+	else:
+		set_physics_process(false)
 
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)

@@ -1,5 +1,5 @@
 class_name Menu
-extends Control
+extends CanvasLayer
 
 
 @onready var join_server_button: Button = %JoinServer

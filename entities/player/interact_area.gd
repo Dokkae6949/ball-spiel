@@ -17,6 +17,4 @@ func _on_interact() -> void:
 			break
 
 	if not ball: return
-
-	print("kick!")
 	ball.apply_central_impulse(Glob.player.global_position.direction_to(ball.global_position) * KICK_FORCE)

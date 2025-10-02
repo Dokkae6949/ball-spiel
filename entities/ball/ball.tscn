@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bk5ivlgwgy1yj"]
+[gd_scene load_steps=11 format=3 uid="uid://bk5ivlgwgy1yj"]
 
 [ext_resource type="Script" uid="uid://di0datf0dy01u" path="res://entities/ball/ball.gd" id="1_61umk"]
 [ext_resource type="Script" uid="uid://bollgchudn4ao" path="res://entities/ball/goal_detection.gd" id="2_jyt08"]
@@ -28,6 +28,14 @@ radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_61umk"]
 radius = 2.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jyt08"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Ball" type="RigidBody2D"]
 collision_layer = 4
@@ -59,3 +67,6 @@ script = ExtResource("2_jyt08")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GoalDetection"]
 shape = SubResource("CircleShape2D_61umk")
 debug_color = Color(0.8459344, 0.0010015047, 0.9108718, 0.41960785)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_jyt08")
