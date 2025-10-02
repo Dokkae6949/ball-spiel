@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://dloq01g4o4rqr"]
+[gd_scene load_steps=13 format=3 uid="uid://dloq01g4o4rqr"]
 
 [ext_resource type="Script" uid="uid://raj5u3ofanni" path="res://entities/player/player.gd" id="1_symyc"]
 [ext_resource type="PackedScene" uid="uid://dcl6ybv8vnco2" path="res://entities/player/user_interface.tscn" id="2_abrql"]
 [ext_resource type="Script" uid="uid://cce4eysbrlch2" path="res://entities/player/interact_area.gd" id="3_sglur"]
+[ext_resource type="Script" uid="uid://d34phspgomixj" path="res://entities/player/player_synchronizer.gd" id="4_bls4j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_abrql"]
 friction = 0.0
@@ -29,6 +30,11 @@ radius = 16.0
 radius = 20.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_sglur"]
+properties/0/path = NodePath("PlayerSynchronizer:input_direction")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bls4j"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
@@ -74,5 +80,9 @@ script = ExtResource("3_sglur")
 shape = SubResource("CircleShape2D_abrql")
 debug_color = Color(0.52805233, 0.57219076, 3.85046e-07, 0.41960785)
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_sglur")
+script = ExtResource("4_bls4j")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_bls4j")

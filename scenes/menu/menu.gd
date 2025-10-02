@@ -41,5 +41,5 @@ func _host_pressed() -> void:
 func _on_hosted(port: int) -> void:
 	print("[Menu] Hosting server (Port %s). Trying to open lobby." % port)
 
-func _on_joined(ip: String, port: int) -> void:
+func _on_joined(port: int, ip: String)-> void:
 	print("[Menu] Joined server (%s:%s). Trying to open lobby." % [ip, port])

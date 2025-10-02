@@ -70,3 +70,9 @@ func spawn_players() -> void:
 		var new_player: Player = PLAYER_SCENE.instantiate()
 		new_player.name = str(peer)
 		players.add_child(new_player)
+		_on_multiplayer_spawner_spawned(new_player)
+
+
+func _on_multiplayer_spawner_spawned(node: Node) -> void:
+	if node is Player:
+		node.player_sync.set_multiplayer_authority(int(node.name))
