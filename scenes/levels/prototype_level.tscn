@@ -17,7 +17,7 @@ size = Vector2(640, 16)
 size = Vector2(16, 108)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bls32"]
-size = Vector2(768, 16)
+size = Vector2(832, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hg8qc"]
 size = Vector2(16, 480)
@@ -27,51 +27,51 @@ size = Vector2(16, 480)
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 mesh = SubResource("BoxMesh_gigty")
 
-[node name="BallWall" type="StaticBody2D" parent="."]
+[node name="BallBorder" type="StaticBody2D" parent="."]
 collision_layer = 8
 physics_material_override = SubResource("PhysicsMaterial_bls32")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BallWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallBorder"]
 position = Vector2(0, -168)
 shape = SubResource("RectangleShape2D_gigty")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="BallWall"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BallBorder"]
 position = Vector2(0, 168)
 shape = SubResource("RectangleShape2D_gigty")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="BallWall"]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="BallBorder"]
 position = Vector2(-328, -122)
 shape = SubResource("RectangleShape2D_bwbut")
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="BallWall"]
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="BallBorder"]
 position = Vector2(328, -122)
 shape = SubResource("RectangleShape2D_bwbut")
 
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="BallWall"]
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="BallBorder"]
 position = Vector2(-328, 122)
 shape = SubResource("RectangleShape2D_bwbut")
 
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="BallWall"]
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="BallBorder"]
 position = Vector2(328, 122)
 shape = SubResource("RectangleShape2D_bwbut")
 
-[node name="PlayerWall" type="StaticBody2D" parent="."]
+[node name="PlayerBorder" type="StaticBody2D" parent="."]
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBorder"]
 position = Vector2(0, -232)
 shape = SubResource("RectangleShape2D_bls32")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerWall"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerBorder"]
 position = Vector2(0, 232)
 shape = SubResource("RectangleShape2D_bls32")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlayerWall"]
-position = Vector2(-392, 0)
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlayerBorder"]
+position = Vector2(-424, 0)
 shape = SubResource("RectangleShape2D_hg8qc")
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="PlayerWall"]
-position = Vector2(392, 0)
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="PlayerBorder"]
+position = Vector2(424, 0)
 shape = SubResource("RectangleShape2D_hg8qc")
 
 [node name="Goal" parent="." instance=ExtResource("3_hg8qc")]
