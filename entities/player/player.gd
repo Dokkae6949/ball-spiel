@@ -9,6 +9,8 @@ const ACCELERATION: float = 34000
 @onready var player_sync: PlayerSynchronizer = $PlayerSynchronizer
 
 @export var direction: Vector2
+## Represents the velocity of the player. BUT this not used by the physics engine. This is only the synced value from the server.
+@export var cur_velocity: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -22,12 +24,15 @@ func _ready() -> void:
 		set_process_unhandled_key_input(false)
 
 
+func _process(_delta: float) -> void:
+	if name == str(multiplayer.get_unique_id()):
+		Glob.debug_panel.add_property('Velocity', '(%s,%s)' % [roundi(cur_velocity.x), roundi(cur_velocity.y)], 2)
+
+
 func _physics_process(delta: float) -> void:
 	_handle_movement(delta)
 	_limit_move_speed()
-
-	if name == str(multiplayer.get_unique_id()):
-		Glob.debug_panel.add_property('Velocity', str(linear_velocity), 2)
+	cur_velocity = linear_velocity
 
 
 func _handle_movement(delta: float) -> void:
