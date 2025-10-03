@@ -70,11 +70,12 @@ position_smoothing_speed = 16.0
 
 [node name="UserInterface" parent="." instance=ExtResource("2_abrql")]
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." node_paths=PackedStringArray("player")]
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("3_sglur")
+player = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 shape = SubResource("CircleShape2D_abrql")
