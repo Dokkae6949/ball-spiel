@@ -14,6 +14,12 @@ func _ready() -> void:
 	NetworkService.hosted.connect(_on_hosted)
 	NetworkService.joined.connect(_on_joined)
 
+	if OS.has_feature('host_server'):
+		_host_pressed.call_deferred()
+	elif OS.has_feature('join_server'):
+		host_address_input.text = '127.0.0.1:9912'
+		_join_pressed.call_deferred()
+
 
 func _join_pressed() -> void:
 	var address_parts := host_address_input.text.split(":")
