@@ -4,6 +4,8 @@ class_name GameManager
 
 signal teams_refreshed(teams: Array[TeamDetails])
 
+const SCORE_TO_WIN: int = 1
+
 @onready var post_match_timer: Timer = $PostMatchTimer
 @onready var post_match_interface: CanvasLayer = $PostMatchInterface
 @onready var post_match_title: RichTextLabel = $PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer/Title
@@ -18,7 +20,9 @@ func _ready() -> void:
 
 func start_game() -> void:
 	get_parent().spawn_players()
-	_create_teams()
+	if teams.is_empty():
+		_create_teams()
+		
 	_add_players_to_random_teams()
 	teams_refreshed.emit(teams)
 	for team: TeamDetails in teams:
@@ -46,7 +50,7 @@ func add_score(teamId: int, value: int) -> void:
 	team.score += value
 	teams_refreshed.emit(teams)
 	sync_team.rpc(team.teamId, team.score, team.playerIds)
-	if team.score >= 3:
+	if team.score >= SCORE_TO_WIN:
 		end_game.rpc()
 
 
@@ -54,6 +58,12 @@ func add_score(teamId: int, value: int) -> void:
 func _create_teams(amount: int = 2) -> void:
 	for i: int in range(amount):
 		teams.append(TeamDetails.new(i))
+
+
+func _reset_teams() -> void:
+	for team: TeamDetails in teams:
+		team.score = 0
+		sync_team(team.teamId, 0, team.playerIds)
 
 
 ## Adds all players in [method LobbyManager.get_spawned_players] to random teams
@@ -75,6 +85,9 @@ func sync_team(teamId: int, score: int, playerIds: Array[int]) -> void:
 	teams_refreshed.emit(teams)
 
 
+@rpc
 func _back_to_lobby() -> void:
+	if multiplayer.is_server():
+		_back_to_lobby.rpc()
 	post_match_interface.visible = false
 	Glob.lobby_manager.change_scene(LobbyManager.SceneType.LOBBY)

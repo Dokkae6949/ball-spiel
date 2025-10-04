@@ -6,7 +6,8 @@ const SKID_SPEED: float = 160
 const ACCELERATION: float = 34000
 
 @onready var camera: Camera2D = $Camera2D
-@onready var player_sync: PlayerSynchronizer = $PlayerSynchronizer
+@onready var input_sync: PlayerSynchronizer = $InputSynchronizer
+@onready var mp_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
 @export var direction: Vector2
 ## Represents the velocity of the player. BUT this not used by the physics engine. This is only the synced value from the server.
@@ -37,7 +38,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _handle_movement(delta: float) -> void:
-	direction = player_sync.input_direction
+	direction = input_sync.input_direction
 	if not direction.is_zero_approx():
 		apply_central_force(direction * ACCELERATION)
 	else:

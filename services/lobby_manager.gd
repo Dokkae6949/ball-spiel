@@ -21,6 +21,7 @@ const PLAYER_SCENE: PackedScene = preload("uid://dloq01g4o4rqr")
 @onready var players_node: Node2D = $Players
 @onready var current_scene: Node = $CurrentScene
 @onready var game_manager: GameManager = $GameManager
+@onready var mp_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 var current_scene_type: SceneType
 
@@ -50,8 +51,14 @@ func change_scene(type: SceneType) -> void:
 	if current_scene.get_child_count() > 0:
 		current_scene.get_child(0).queue_free()
 
-	if multiplayer.is_server():
-		for player: Player in players_node.get_children():
+	for player: Player in players_node.get_children():
+		if player.input_sync.is_multiplayer_authority():
+			player.input_sync.public_visibility = false
+			player.input_sync.set_multiplayer_authority(0)
+		if player.mp_sync.is_multiplayer_authority():
+			player.mp_sync.public_visibility = false
+			player.mp_sync.set_multiplayer_authority(0)
+		if multiplayer.is_server():
 			player.queue_free()
 
 	var packed_scene: PackedScene = SceneDict.get(type)
@@ -82,7 +89,7 @@ func spawn_players() -> void:
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
-		node.player_sync.set_multiplayer_authority(int(node.name))
+		node.input_sync.set_multiplayer_authority(int(node.name))
 
 
 func get_spawned_players() -> Array[Player]:
