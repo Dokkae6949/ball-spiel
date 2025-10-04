@@ -18,7 +18,7 @@ const SceneDict: Dictionary[SceneType, PackedScene] = {
 
 const PLAYER_SCENE = preload("uid://dloq01g4o4rqr")
 
-@onready var players: Node = $Players
+@onready var players_node: Node2D = $Players
 @onready var current_scene: Node = $CurrentScene
 
 var current_scene_type: SceneType
@@ -33,7 +33,7 @@ func _ready() -> void:
 
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server(): return
-	for player: Player in players.get_children():
+	for player: Player in players_node.get_children():
 		if player.name == str(id):
 			player.queue_free()
 			return
@@ -41,6 +41,7 @@ func _on_peer_disconnected(id: int) -> void:
 
 func _on_connect(_x: Variant, _y: Variant = null) -> void:
 	change_scene(SceneType.LOBBY)
+	get_window().title = str(multiplayer.get_unique_id())
 
 
 @rpc("authority", "call_local", "reliable")
@@ -58,9 +59,6 @@ func change_scene(type: SceneType) -> void:
 	current_scene.add_child(new_scene)
 	current_scene_type = type
 
-	if type == SceneType.ARENA:
-		spawn_players()
-
 
 func spawn_players() -> void:
 	if not multiplayer.is_server(): return
@@ -69,10 +67,18 @@ func spawn_players() -> void:
 	for peer: int in peers:
 		var new_player: Player = PLAYER_SCENE.instantiate()
 		new_player.name = str(peer)
-		players.add_child(new_player)
+		players_node.add_child(new_player)
 		_on_multiplayer_spawner_spawned(new_player)
 
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
 		node.player_sync.set_multiplayer_authority(int(node.name))
+
+
+func get_spawned_players() -> Array[Player]:
+	var array: Array[Player] = []
+	for node: Node in players_node.get_children():
+		if node is Player:
+			array.append(node)
+	return array
