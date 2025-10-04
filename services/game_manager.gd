@@ -11,8 +11,7 @@ func _ready() -> void:
 	_create_teams()
 	_add_players_to_random_teams()
 	for team: TeamDetails in teams:
-		#print(team.playerIds)
-		pass
+		sync_team.rpc(team.teamId, team.score, team.playerIds)
 
 
 func add_score(teamId: int, value: int) -> void:
@@ -47,3 +46,10 @@ func _add_players_to_random_teams() -> void:
 			var player: Player = players_to_assign.pick_random()
 			players_to_assign = players_to_assign.filter(func(p: Player): return p.name != player.name)
 			teams[i].playerIds.append(int(player.name))
+
+
+@rpc("reliable")
+func sync_team(teamId: int, score: int, playerIds: Array[int]) -> void:
+	var new_team: TeamDetails = TeamDetails.new(teamId, score, playerIds)
+	teams = teams.filter(func(t: TeamDetails): return t.teamId != teamId)
+	teams.append(new_team)
