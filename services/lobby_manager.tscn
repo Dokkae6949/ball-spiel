@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cupcmcghrjvjk" path="res://services/lobby_manager.gd" id="1_jgvmm"]
 [ext_resource type="PackedScene" uid="uid://c0n426r2e7mnu" path="res://debug_interface.tscn" id="2_ybmu8"]
-[ext_resource type="Script" uid="uid://bcrfovkbmm53f" path="res://services/game_manager.gd" id="3_0iex3"]
+[ext_resource type="PackedScene" uid="uid://bmy02yn8eskuo" path="res://services/game_manager.tscn" id="3_0iex3"]
 
 [node name="LobbyManager" type="Node"]
 script = ExtResource("1_jgvmm")
@@ -21,8 +21,6 @@ physics_interpolation_mode = 2
 
 [node name="DebugInterface" parent="." instance=ExtResource("2_ybmu8")]
 
-[node name="GameManager" type="Node" parent="."]
-script = ExtResource("3_0iex3")
-metadata/_custom_type_script = "uid://bcrfovkbmm53f"
+[node name="GameManager" parent="." instance=ExtResource("3_0iex3")]
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

@@ -16,7 +16,7 @@ const SceneDict: Dictionary[SceneType, PackedScene] = {
 	SceneType.MENU: preload("uid://bbw6acpaxs688")
 }
 
-const PLAYER_SCENE = preload("uid://dloq01g4o4rqr")
+const PLAYER_SCENE: PackedScene = preload("uid://dloq01g4o4rqr")
 
 @onready var players_node: Node2D = $Players
 @onready var current_scene: Node = $CurrentScene
@@ -49,6 +49,10 @@ func _on_connect(_x: Variant, _y: Variant = null) -> void:
 func change_scene(type: SceneType) -> void:
 	if current_scene.get_child_count() > 0:
 		current_scene.get_child(0).queue_free()
+
+	if multiplayer.is_server():
+		for player: Player in players_node.get_children():
+			player.queue_free()
 
 	var packed_scene: PackedScene = SceneDict.get(type)
 	if not packed_scene:

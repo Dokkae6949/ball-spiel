@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://bmy02yn8eskuo"]
+
+[ext_resource type="Script" uid="uid://bcrfovkbmm53f" path="res://services/game_manager.gd" id="1_x3wbt"]
+
+[sub_resource type="FontVariation" id="FontVariation_x3wbt"]
+
+[sub_resource type="FontVariation" id="FontVariation_acd1v"]
+
+[sub_resource type="FontVariation" id="FontVariation_scl3l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x3wbt"]
+
+[node name="GameManager" type="Node"]
+script = ExtResource("1_x3wbt")
+metadata/_custom_type_script = "uid://bcrfovkbmm53f"
+
+[node name="PostMatchTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="PostMatchInterface" type="CanvasLayer" parent="."]
+layer = 9
+
+[node name="PanelContainer" type="PanelContainer" parent="PostMatchInterface"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="PostMatchInterface/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PostMatchInterface/PanelContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/bold_font = SubResource("FontVariation_x3wbt")
+theme_override_font_sizes/bold_font_size = 64
+bbcode_enabled = true
+text = "[b]WINNER"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="RichTextLabel" parent="PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_acd1v")
+theme_override_fonts/italics_font = SubResource("FontVariation_scl3l")
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+bbcode_enabled = true
+text = "[i]2  -  3"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator" type="HSeparator" parent="PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+theme_override_styles/separator = SubResource("StyleBoxEmpty_x3wbt")
+
+[node name="LobbyButton" type="Button" parent="PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back to Lobby"
+
+[connection signal="timeout" from="PostMatchTimer" to="." method="_back_to_lobby"]
+[connection signal="pressed" from="PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer/LobbyButton" to="." method="_back_to_lobby"]

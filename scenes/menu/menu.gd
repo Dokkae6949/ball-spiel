@@ -22,7 +22,7 @@ func _ready() -> void:
 
 
 func _join_pressed() -> void:
-	var address_parts := host_address_input.text.split(":")
+	var address_parts: PackedStringArray = host_address_input.text.split(":")
 	
 	if address_parts.size() != 2:
 		push_warning("Host address must be of format <ip>:<port>")
@@ -31,8 +31,8 @@ func _join_pressed() -> void:
 		push_warning("Host port must be a valid number")
 		return
 	
-	var ip := address_parts[0]
-	var port := address_parts[1].to_int()
+	var ip: StringName = address_parts[0]
+	var port: int = address_parts[1].to_int()
 	
 	print("[Menu] Trying to connect to %s:%s" % [ip, port])
 	
