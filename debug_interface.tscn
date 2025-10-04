@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0n426r2e7mnu"]
+
+[ext_resource type="Script" uid="uid://bjid8w3kcm85s" path="res://services/debug_panel.gd" id="1_8pvja"]
+
+[node name="DebugInterface" type="CanvasLayer"]
+
+[node name="DebugPanel" type="PanelContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_8pvja")
+metadata/_custom_type_script = "uid://bjid8w3kcm85s"

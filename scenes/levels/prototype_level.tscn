@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://cflj1w58yi31p"]
+[gd_scene load_steps=9 format=3 uid="uid://cflj1w58yi31p"]
 
 [ext_resource type="PackedScene" uid="uid://bk5ivlgwgy1yj" path="res://entities/ball/ball.tscn" id="2_bls32"]
 [ext_resource type="PackedScene" uid="uid://bcrgwpxukuhea" path="res://entities/goal/goal.tscn" id="3_hg8qc"]
-[ext_resource type="Script" uid="uid://bcrfovkbmm53f" path="res://services/game_manager.gd" id="3_i8wb4"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gigty"]
 size = Vector3(640, 320, 1)
@@ -75,15 +74,15 @@ shape = SubResource("RectangleShape2D_hg8qc")
 position = Vector2(424, 0)
 shape = SubResource("RectangleShape2D_hg8qc")
 
-[node name="Goal" parent="." instance=ExtResource("3_hg8qc")]
+[node name="Goal" parent="." node_paths=PackedStringArray("game_manager") instance=ExtResource("3_hg8qc")]
 position = Vector2(-352, 0)
+game_manager = NodePath("")
 
-[node name="Goal2" parent="." instance=ExtResource("3_hg8qc")]
+[node name="Goal2" parent="." node_paths=PackedStringArray("game_manager") instance=ExtResource("3_hg8qc")]
 position = Vector2(352, 0)
 rotation = 3.1415927
+teamId = 1
+game_manager = NodePath("")
 
 [node name="Ball" parent="." instance=ExtResource("2_bls32")]
 position = Vector2(-48, -26)
-
-[node name="GameManager" type="Node" parent="."]
-script = ExtResource("3_i8wb4")

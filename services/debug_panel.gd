@@ -1,11 +1,13 @@
 extends PanelContainer
 class_name DebugPanel
 
-@onready var property_container: VBoxContainer = $VBoxContainer
+@onready var property_container: VBoxContainer
 
 func _ready() -> void:
 	Glob.debug_panel = self
 	visible = true
+	property_container = VBoxContainer.new()
+	self.add_child(property_container)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_debug_toggle"):

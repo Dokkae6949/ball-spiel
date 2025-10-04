@@ -20,6 +20,7 @@ const PLAYER_SCENE = preload("uid://dloq01g4o4rqr")
 
 @onready var players_node: Node2D = $Players
 @onready var current_scene: Node = $CurrentScene
+@onready var game_manager: GameManager = $GameManager
 
 var current_scene_type: SceneType
 
@@ -46,7 +47,6 @@ func _on_connect(_x: Variant, _y: Variant = null) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func change_scene(type: SceneType) -> void:
-	scene_change.emit()
 	if current_scene.get_child_count() > 0:
 		current_scene.get_child(0).queue_free()
 
@@ -55,9 +55,14 @@ func change_scene(type: SceneType) -> void:
 		push_warning("Invalid SceneType given for SceneDict! %s" % type)
 		return
 
+	scene_change.emit()
 	var new_scene: Node = packed_scene.instantiate()
 	current_scene.add_child(new_scene)
 	current_scene_type = type
+
+	if not multiplayer.is_server(): return
+	if current_scene_type == SceneType.ARENA:
+		game_manager.start_game()
 
 
 func spawn_players() -> void:

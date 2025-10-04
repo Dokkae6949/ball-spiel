@@ -4,7 +4,9 @@ class_name Goal
 
 @onready var goal_area: Area2D = $GoalArea
 
+@export var teamId: int
+
 
 func _on_goal_area_area_entered(area: Area2D) -> void:
 	if area is not GoalDetection: return
-	print("GOALLL")
+	Glob.game_manager.add_score(teamId, 1)

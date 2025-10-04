@@ -22,11 +22,12 @@ func _ready() -> void:
 		set_process_input(false)
 		set_process_unhandled_input(false)
 		set_process_unhandled_key_input(false)
+		set_process(false)
+		$UserInterface.queue_free()
 
 
 func _process(_delta: float) -> void:
-	if name == str(multiplayer.get_unique_id()):
-		Glob.debug_panel.add_property('Velocity', '(%s,%s)' % [roundi(cur_velocity.x), roundi(cur_velocity.y)], 2)
+	Glob.debug_panel.add_property('Velocity', '(%s,%s)' % [roundi(cur_velocity.x), roundi(cur_velocity.y)], 2)
 
 
 func _physics_process(delta: float) -> void:

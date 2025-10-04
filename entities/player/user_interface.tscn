@@ -1,14 +1,19 @@
 [gd_scene load_steps=2 format=3 uid="uid://dcl6ybv8vnco2"]
 
-[ext_resource type="Script" uid="uid://bjid8w3kcm85s" path="res://services/debug_panel.gd" id="1_w67o0"]
+[ext_resource type="PackedScene" uid="uid://d2rlualmx4sjl" path="res://entities/player/score.tscn" id="1_w67o0"]
 
 [node name="UserInterface" type="CanvasLayer"]
 
-[node name="DebugPanel" type="PanelContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("1_w67o0")
-metadata/_custom_type_script = "uid://bjid8w3kcm85s"
+[node name="Deadzone" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel"]
+[node name="Score" parent="Deadzone" instance=ExtResource("1_w67o0")]
 layout_mode = 2

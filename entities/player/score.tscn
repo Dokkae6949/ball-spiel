@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2rlualmx4sjl"]
+
+[ext_resource type="Script" uid="uid://dqo3d2b64xq1" path="res://entities/player/score.gd" id="1_1fp55"]
+
+[node name="Score" type="PanelContainer"]
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("1_1fp55")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="ScoreTeam0" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "99"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="PlayTime" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "30:00"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreTeam1" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "99"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
