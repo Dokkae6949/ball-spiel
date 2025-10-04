@@ -90,4 +90,6 @@ func _back_to_lobby() -> void:
 	if multiplayer.is_server():
 		_back_to_lobby.rpc()
 	post_match_interface.visible = false
+	post_match_timer.stop()
 	Glob.lobby_manager.change_scene(LobbyManager.SceneType.LOBBY)
+	_reset_teams()
