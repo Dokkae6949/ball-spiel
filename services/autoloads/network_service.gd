@@ -13,12 +13,13 @@ const CONNECTION_TIMEOUT: float = 3
 
 var peer: ENetMultiplayerPeer
 var _state: State = State.DISCONNECTED
-var connection_timeout_timer: SceneTreeTimer
 
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	multiplayer.connection_failed.connect(_connection_not_resolved)
+	multiplayer.connected_to_server.connect(_successful_connection)
 
 
 func host(port: int) -> void:
@@ -34,6 +35,7 @@ func host(port: int) -> void:
 
 	multiplayer.multiplayer_peer = peer
 	hosted.emit(port)
+	_successful_connection()
 
 
 func join(ip: String, port: int) -> void:
@@ -52,14 +54,16 @@ func join(ip: String, port: int) -> void:
 
 	multiplayer.multiplayer_peer = peer
 	joined.emit(port, ip)
-	connection_timeout_timer = get_tree().create_timer(CONNECTION_TIMEOUT)
-	connection_timeout_timer.timeout.connect(_connection_not_resolved)
 
 
 func _connection_not_resolved() -> void:
 	if _state != State.DISCONNECTED: return
 	_on_error("Connection could not be resolved.")
 	quit()
+
+
+func _successful_connection() -> void:
+	Glob.lobby_manager.change_scene(LobbyManager.SceneType.LOBBY)
 
 
 func quit() -> void:
@@ -75,8 +79,6 @@ func get_state() -> State:
 
 
 func _on_peer_connected(id: int) -> void:
-	if connection_timeout_timer:
-		connection_timeout_timer.timeout.disconnect(_connection_not_resolved)
 	_state = State.HOST if multiplayer.is_server() else State.CLIENT
 	peer_connected.emit(id)
 

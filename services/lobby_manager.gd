@@ -28,8 +28,6 @@ var current_scene_type: SceneType
 
 func _ready() -> void:
 	Glob.lobby_manager = self
-	NetworkService.hosted.connect(_on_connect)
-	NetworkService.peer_connected.connect(_on_connect)
 	change_scene(SceneType.MENU)
 
 
@@ -39,11 +37,6 @@ func _on_peer_disconnected(id: int) -> void:
 		if player.name == str(id):
 			player.queue_free()
 			return
-
-
-func _on_connect(_x: Variant, _y: Variant = null) -> void:
-	change_scene(SceneType.LOBBY)
-	get_window().title = str(multiplayer.get_unique_id())
 
 
 @rpc("authority", "call_local", "reliable")
