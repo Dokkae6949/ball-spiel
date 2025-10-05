@@ -29,7 +29,7 @@ var current_scene_type: SceneType
 func _ready() -> void:
 	Glob.lobby_manager = self
 	NetworkService.hosted.connect(_on_connect)
-	NetworkService.joined.connect(_on_connect)
+	NetworkService.peer_connected.connect(_on_connect)
 	change_scene(SceneType.MENU)
 
 
@@ -48,6 +48,7 @@ func _on_connect(_x: Variant, _y: Variant = null) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func change_scene(type: SceneType) -> void:
+	if current_scene_type == type: return
 	if current_scene.get_child_count() > 0:
 		current_scene.get_child(0).queue_free()
 
@@ -68,9 +69,10 @@ func change_scene(type: SceneType) -> void:
 
 	scene_change.emit()
 	var new_scene: Node = packed_scene.instantiate()
-	current_scene.add_child(new_scene)
+	current_scene.add_child(new_scene, true)
 	current_scene_type = type
 
+	if not multiplayer.has_multiplayer_peer(): return
 	if not multiplayer.is_server(): return
 	if current_scene_type == SceneType.ARENA:
 		game_manager.start_game()
@@ -98,3 +100,7 @@ func get_spawned_players() -> Array[Player]:
 		if node is Player:
 			array.append(node)
 	return array
+
+
+func get_current_scene() -> Node:
+	return current_scene.get_child(0) if current_scene.get_child_count() > 0 else null

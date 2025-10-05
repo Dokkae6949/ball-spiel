@@ -5,9 +5,11 @@ extends CanvasLayer
 @onready var join_server_button: Button = %JoinServer
 @onready var host_server_button: Button = %HostServer
 @onready var host_address_input: LineEdit = %HostAddress
+@onready var error_message: RichTextLabel = $PanelContainer/MarginContainer/VBoxContainer/ErrorMessage
 
 
 func _ready() -> void:
+	error_message.visible = false
 	join_server_button.pressed.connect(_join_pressed)
 	host_server_button.pressed.connect(_host_pressed)
 	
@@ -49,3 +51,15 @@ func _on_hosted(port: int) -> void:
 
 func _on_joined(port: int, ip: String)-> void:
 	print("[Menu] Joined server (%s:%s). Trying to open lobby." % [ip, port])
+
+
+func set_error_message(txt: String) -> void:
+	error_message.add_theme_color_override("default_color", Color("ff554a"))
+	error_message.text = txt
+	error_message.visible = not txt.is_empty()
+
+
+func set_info_message(txt: String) -> void:
+	error_message.add_theme_color_override("default_color", Color.WHITE)
+	error_message.text = txt
+	error_message.visible = not txt.is_empty()
