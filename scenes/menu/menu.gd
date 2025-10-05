@@ -27,9 +27,11 @@ func _join_pressed() -> void:
 	var address_parts: PackedStringArray = host_address_input.text.split(":")
 	
 	if address_parts.size() != 2:
+		set_error_message("Host address must be of format <ip>:<port>")
 		push_warning("Host address must be of format <ip>:<port>")
 		return
 	if !address_parts[1].is_valid_int():
+		set_error_message("Host port must be a valid number")
 		push_warning("Host port must be a valid number")
 		return
 	

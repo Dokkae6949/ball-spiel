@@ -37,4 +37,10 @@ layout_mode = 2
 disabled = true
 text = "START GAME"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/StartButton" to="." method="_on_button_pressed"]
+[node name="LeaveButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "LEAVE"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]

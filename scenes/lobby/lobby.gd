@@ -27,5 +27,8 @@ func refresh(_id: int) -> void:
 		playerlist.add_child(new_label)
 
 
-func _on_button_pressed() -> void:
+func _on_start_button_pressed() -> void:
 	Glob.lobby_manager.change_scene.rpc(Glob.lobby_manager.SceneType.ARENA)
+
+func _on_leave_button_pressed() -> void:
+	NetworkService.quit()

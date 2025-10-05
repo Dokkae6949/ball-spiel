@@ -48,9 +48,11 @@ func _on_connect(_x: Variant, _y: Variant = null) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func change_scene(type: SceneType) -> void:
-	if current_scene_type == type: return
-	if current_scene.get_child_count() > 0:
-		current_scene.get_child(0).queue_free()
+	if current_scene_type == type:
+		print("Scene Type not changed. Skipping change.")
+		return
+	for child: Node in current_scene.get_children():
+		child.queue_free()
 
 	for player: Player in players_node.get_children():
 		if player.input_sync.is_multiplayer_authority():
