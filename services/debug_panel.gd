@@ -15,7 +15,8 @@ func _input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	if not visible: return
-	add_property("FPS", "%.2f" % (1.0/delta), 0)
+	if Engine.get_physics_frames() % (ProjectSettings.get_setting("physics/common/physics_ticks_per_second") / 2) == 0:
+		add_property("FPS", "%.0f" % (1.0/delta), 0)
 
 
 ## Adds or replaces given debug property.
