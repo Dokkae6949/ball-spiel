@@ -29,6 +29,7 @@ var current_scene_type: SceneType
 func _ready() -> void:
 	Glob.lobby_manager = self
 	change_scene(SceneType.MENU)
+	NetworkService.peer_disconnected.connect(_on_peer_disconnected)
 
 
 func _on_peer_disconnected(id: int) -> void:
@@ -75,18 +76,18 @@ func change_scene(type: SceneType) -> void:
 
 func spawn_players() -> void:
 	if not multiplayer.is_server(): return
-	var peers: Array[int] = [1]
-	peers.append_array(multiplayer.get_peers())
-	for peer: int in peers:
-		var new_player: Player = PLAYER_SCENE.instantiate()
-		new_player.name = str(peer)
-		players_node.add_child(new_player)
-		_on_multiplayer_spawner_spawned(new_player)
+	for team: TeamDetails in Glob.game_manager.get_all_teams():
+		for peer: int in team.playerIds:
+			var new_player: Player = PLAYER_SCENE.instantiate()
+			new_player.name = str(peer)
+			players_node.add_child(new_player)
+			_on_multiplayer_spawner_spawned(new_player)
 
 
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
 		node.input_sync.set_multiplayer_authority(int(node.name))
+		node.refresh_players_team()
 
 
 func get_spawned_players() -> Array[Player]:
@@ -95,6 +96,11 @@ func get_spawned_players() -> Array[Player]:
 		if node is Player:
 			array.append(node)
 	return array
+
+
+func get_player_by_id(id: int) -> Player:
+	var players: Array[Player] = get_spawned_players()
+	return players.get(players.find_custom(func(p: Player) -> bool: return int(p.name) == id))
 
 
 func get_current_scene() -> Node:

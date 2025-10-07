@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _on_teams_refreshed(teams: Array[TeamDetails]) -> void:
 	if teams.size() < 2: return
-	var team0: TeamDetails = TeamDetails.find_team_by_id(teams, 0)
-	var team1: TeamDetails = TeamDetails.find_team_by_id(teams, 1)
+	var team0: TeamDetails = TeamDetails.find_team_by_id(teams, 1)
+	var team1: TeamDetails = TeamDetails.find_team_by_id(teams, 2)
 	score_team_0.text = str(team0.score)
 	score_team_1.text = str(team1.score)

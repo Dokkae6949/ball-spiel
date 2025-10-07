@@ -78,6 +78,13 @@ func get_state() -> State:
 	return _state
 
 
+## Same as [method multiplayer.get_peers] but also returns the id of the current [param MultiplayerApi.multiplayer_peer]
+func get_all_peers() -> Array[int]:
+	var array: Array[int] = [multiplayer.get_unique_id()]
+	array.append_array(multiplayer.get_peers())
+	return array
+
+
 func _on_peer_connected(id: int) -> void:
 	_state = State.HOST if multiplayer.is_server() else State.CLIENT
 	peer_connected.emit(id)

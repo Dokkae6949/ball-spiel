@@ -9,6 +9,7 @@ const ACCELERATION: float = 34000
 @onready var input_sync: InputSynchronizer = $InputSynchronizer
 @onready var mp_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var interact_area: InteractArea = $InteractArea
+@onready var mesh_instance: MeshInstance2D = $MeshInstance2D
 
 @export var direction: Vector2
 ## Represents the velocity of the player. BUT this not used by the physics engine. This is only the synced value from the server.
@@ -16,6 +17,7 @@ const ACCELERATION: float = 34000
 
 
 func _ready() -> void:
+	Glob.game_manager.teams_refreshed.connect(refresh_players_team)
 	if name == str(multiplayer.get_unique_id()):
 		Glob.player = self
 		camera.make_current()
@@ -50,3 +52,8 @@ func _handle_movement(delta: float) -> void:
 func _limit_move_speed() -> void:
 	if linear_velocity.length_squared() > MAX_SPEED*MAX_SPEED:
 		linear_velocity = linear_velocity.normalized() * MAX_SPEED
+
+
+func refresh_players_team(teams: Array[TeamDetails] = Glob.game_manager.get_all_teams()) -> void:
+	var team: TeamDetails = teams.get(teams.find_custom(func(t: TeamDetails) -> bool: return t.playerIds.has(int(name))))
+	mesh_instance.modulate = team.color

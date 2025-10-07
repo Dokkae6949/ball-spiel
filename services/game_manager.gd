@@ -12,40 +12,40 @@ const SCORE_TO_WIN: int = 1
 @onready var post_match_title: RichTextLabel = $PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer/Title
 @onready var post_match_score: RichTextLabel = $PostMatchInterface/PanelContainer/CenterContainer/VBoxContainer/Score
 
-@export var teams: Array[TeamDetails] = []
 @export var spawn_points: Array[SpawnPoints] = []
+
+var first_team: TeamDetails = TeamDetails.new(1, Color.ROYAL_BLUE)
+var second_team: TeamDetails = TeamDetails.new(2, Color.INDIAN_RED)
 
 
 func _ready() -> void:
 	post_match_interface.visible = false
+	if multiplayer.is_server():
+		multiplayer.peer_connected.connect(_on_peers_changed)
+		multiplayer.peer_disconnected.connect(_on_peers_changed)
+		sync_all_teams()
 
 
 func start_game() -> void:
 	get_parent().spawn_players()
-	if teams.is_empty():
-		_create_teams()
 	if spawn_points.is_empty():
 		_set_spawn_points()
 
-	_add_players_to_random_teams()
-	teams_refreshed.emit(teams)
-	for team: TeamDetails in teams:
-		sync_team.rpc(team.teamId, team.score, team.playerIds)
+	teams_refreshed.emit(get_all_teams())
+	sync_all_teams()
 	_move_players_to_spawn_points()
 
 
-@rpc("call_local", "reliable")
+@rpc
 func end_game() -> void:
-	var player_team: TeamDetails = null
-	var winner_team: TeamDetails = null
-	for team: TeamDetails in teams:
-		if not player_team and team.playerIds.has(int(Glob.player.name)):
-			player_team = team
-		if not winner_team or winner_team.score < team.score:
-			winner_team = team
+	if multiplayer.is_server():
+		end_game.rpc()
+
+	var player_team: TeamDetails = first_team if first_team.playerIds.has(int(Glob.player.name)) else second_team
+	var winner_team: TeamDetails = first_team if first_team.score > second_team.score else second_team
 
 	post_match_title.text = "[b]WINNER" if player_team.teamId == winner_team.teamId else "[b]LOSER"
-	post_match_score.text = "[i]%d  -  %d" % [TeamDetails.find_team_by_id(teams, 0).score, TeamDetails.find_team_by_id(teams, 1).score]
+	post_match_score.text = "[i]%d  -  %d" % [first_team.score, second_team.score]
 	post_match_timer.start()
 	post_match_interface.visible = true
 	spawn_points.clear()
@@ -53,53 +53,45 @@ func end_game() -> void:
 
 
 func add_score(teamId: int, value: int) -> void:
-	var team: TeamDetails = TeamDetails.find_team_by_id(teams, teamId)
+	var team: TeamDetails = first_team if first_team.teamId == teamId else second_team
 	team.score += value
-	teams_refreshed.emit(teams)
-	sync_team.rpc(team.teamId, team.score, team.playerIds)
+	teams_refreshed.emit(get_all_teams())
+	_sync_team.rpc(team.teamId, team.color, team.score, team.playerIds)
 	if team.score >= SCORE_TO_WIN:
-		end_game.rpc()
-
-
-## [param amount] of teams to create
-func _create_teams(amount: int = 2) -> void:
-	for i: int in range(amount):
-		teams.append(TeamDetails.new(i))
+		end_game()
 
 
 func _reset_teams() -> void:
-	for team: TeamDetails in teams:
+	for team: TeamDetails in get_all_teams():
 		team.score = 0
-		sync_team(team.teamId, 0, team.playerIds)
+	sync_all_teams()
 
 
-## Adds all players in [method LobbyManager.get_spawned_players] to random teams
-func _add_players_to_random_teams() -> void:
-	var players_to_assign: Array[Player] = Glob.lobby_manager.get_spawned_players()
-	while not players_to_assign.is_empty():
-		for i: int in range(teams.size()):
-			if players_to_assign.is_empty(): return
-			var player: Player = players_to_assign.pick_random()
-			players_to_assign = players_to_assign.filter(func(p: Player) -> bool: return p.name != player.name)
-			teams[i].playerIds.append(int(player.name))
+func sync_all_teams() -> void:
+	for team: TeamDetails in get_all_teams():
+		_sync_team.rpc(team.teamId, team.color, team.score, team.playerIds)
+	teams_refreshed.emit(get_all_teams())
 
 
 @rpc("reliable")
-func sync_team(teamId: int, score: int, playerIds: Array[int]) -> void:
-	var new_team: TeamDetails = TeamDetails.new(teamId, score, playerIds)
-	teams = teams.filter(func(t: TeamDetails) -> bool: return t.teamId != teamId)
-	teams.append(new_team)
-	teams_refreshed.emit(teams)
+func _sync_team(teamId: int, color: Color, score: int, playerIds: Array[int]) -> void:
+	if first_team.teamId == teamId:
+		first_team = TeamDetails.new(teamId, color, score, playerIds)
+	elif second_team.teamId == teamId:
+		second_team = TeamDetails.new(teamId, color, score, playerIds)
+	else:
+		push_warning("Team ID '%d' is not valid!" % teamId)
+	teams_refreshed.emit(get_all_teams())
 
 
 @rpc
 func _back_to_lobby() -> void:
 	if multiplayer.is_server():
 		_back_to_lobby.rpc()
+		_reset_teams()
 	post_match_interface.visible = false
 	post_match_timer.stop()
 	Glob.lobby_manager.change_scene(LobbyManager.SceneType.LOBBY)
-	_reset_teams()
 
 
 func _set_spawn_points() -> void:
@@ -111,8 +103,60 @@ func _set_spawn_points() -> void:
 
 func _move_players_to_spawn_points() -> void:
 	var players: Array[Player] = Glob.lobby_manager.get_spawned_players()
-	for i: int in range(teams.size()):
-		for player: Player in players:
-			if teams.get(i).playerIds.has(int(player.name)):
-				print("%d of %d" % [i, spawn_points.size()])
-				player.position = spawn_points.get(i).get_next_spawn_point()
+	for player: Player in players:
+		if first_team.playerIds.has(int(player.name)):
+			player.position = spawn_points.get(0).get_next_spawn_point()
+		else:
+			player.position = spawn_points.get(1).get_next_spawn_point()
+
+
+@rpc("any_peer")
+func assign_player_to_team(playerId: int, teamId: int) -> void:
+	if not multiplayer.is_server():
+		assign_player_to_team.rpc_id(1, playerId, teamId)
+		return
+
+	for team: TeamDetails in get_all_teams():
+		team.playerIds = team.playerIds.filter(func(id: int) -> bool: return id != playerId)
+		if team.teamId == teamId:
+			team.playerIds.append(playerId)
+	sync_all_teams()
+
+
+func get_all_teams() -> Array[TeamDetails]:
+	return [first_team, second_team]
+
+
+func get_playerIds_of_team(teamId: int) -> Array[int]:
+	for team: TeamDetails in get_all_teams():
+		if team.teamId == teamId:
+			return team.playerIds
+	push_error("Team ID '%d' not found!" % teamId)
+	return []
+
+
+func get_playerIds_without_team() -> Array[int]:
+	var peers: Array[int] = NetworkService.get_all_peers()
+	for team: TeamDetails in get_all_teams():
+		peers = peers.filter(func(id: int) -> bool: return id not in team.playerIds)
+	return peers
+
+
+func _on_peers_changed(_id: int) -> void:
+	if not multiplayer.is_server():
+		# The signal should only be connect for the server. But it's still called on non-hosts.
+		push_warning("called on non-host")
+		return
+	# Filter all players out which are not connected anymore
+	for team: TeamDetails in get_all_teams():
+		team.playerIds = team.playerIds.filter(func(id: int) -> bool: return id not in NetworkService.get_all_peers())
+
+	# Add all unassigned players to spectator team
+	for id: int in NetworkService.get_all_peers():
+		var not_found: int = 0
+		for team: TeamDetails in get_all_teams():
+			if id not in team.playerIds:
+				not_found += 1
+
+		if not_found >= get_all_teams().size():
+			assign_player_to_team(id, 0)

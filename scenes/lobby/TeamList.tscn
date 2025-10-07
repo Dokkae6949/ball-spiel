@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1mhp314dx84l"]
+
+[ext_resource type="Script" uid="uid://cg7gq7fkoh0b8" path="res://scenes/lobby/team_list.gd" id="1_xet4t"]
+
+[node name="TeamList" type="VBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+script = ExtResource("1_xet4t")
+
+[node name="Title" type="RichTextLabel" parent="."]
+layout_mode = 2
+bbcode_enabled = true
+text = "Team 1"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PlayerList" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/PlayerList"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "ID: 59396"
+
+[node name="SwitchToButton" type="Button" parent="."]
+layout_mode = 2
+text = "Switch to"
+
+[connection signal="pressed" from="SwitchToButton" to="." method="_on_switch_to_button_pressed"]
