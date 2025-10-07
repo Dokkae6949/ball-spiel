@@ -8,6 +8,7 @@ const ACCELERATION: float = 34000
 @onready var camera: Camera2D = $Camera2D
 @onready var input_sync: InputSynchronizer = $InputSynchronizer
 @onready var mp_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
+@onready var interact_area: InteractArea = $InteractArea
 
 @export var direction: Vector2
 ## Represents the velocity of the player. BUT this not used by the physics engine. This is only the synced value from the server.
@@ -24,6 +25,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		set_process_unhandled_key_input(false)
 		set_process(false)
+		interact_area.set_process_unhandled_input(false)
 		$UserInterface.queue_free()
 
 
