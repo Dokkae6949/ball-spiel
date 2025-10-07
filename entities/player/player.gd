@@ -6,7 +6,7 @@ const SKID_SPEED: float = 160
 const ACCELERATION: float = 34000
 
 @onready var camera: Camera2D = $Camera2D
-@onready var input_sync: PlayerSynchronizer = $InputSynchronizer
+@onready var input_sync: InputSynchronizer = $InputSynchronizer
 @onready var mp_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
 @export var direction: Vector2

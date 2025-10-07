@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://raj5u3ofanni" path="res://entities/player/player.gd" id="1_symyc"]
 [ext_resource type="PackedScene" uid="uid://dcl6ybv8vnco2" path="res://entities/player/user_interface.tscn" id="2_abrql"]
 [ext_resource type="Script" uid="uid://cce4eysbrlch2" path="res://entities/player/interact_area.gd" id="3_sglur"]
-[ext_resource type="Script" uid="uid://d34phspgomixj" path="res://entities/player/player_synchronizer.gd" id="4_bls4j"]
+[ext_resource type="Script" uid="uid://d34phspgomixj" path="res://entities/player/input_synchronizer.gd" id="4_bls4j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_abrql"]
 friction = 0.0
