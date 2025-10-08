@@ -87,6 +87,7 @@ func spawn_players() -> void:
 func _on_multiplayer_spawner_spawned(node: Node) -> void:
 	if node is Player:
 		node.input_sync.set_multiplayer_authority(int(node.name))
+		node.input_sync.set_physics_process(node.input_sync.is_multiplayer_authority())
 		node.refresh_players_team()
 
 
